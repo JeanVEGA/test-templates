@@ -1,1 +1,10 @@
-target/
+bin
+.classpath
+.project
+.springBeans
+target
+.settings
+log.roo
+*.log
+*.tlog
+*.error
