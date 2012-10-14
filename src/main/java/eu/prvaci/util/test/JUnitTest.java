@@ -17,7 +17,7 @@ abstract public class JUnitTest {
 		createInstance(tested);
 	}
 
-	private Field getTestedField() {
+	protected Field getTestedField() {
 		List<Field> annotated = getAnnotated(Tested.class);
 		if (annotated.size() != 1) {
 			throw new IllegalStateException(String.format(
@@ -27,7 +27,7 @@ abstract public class JUnitTest {
 		return annotated.get(0);
 	}
 
-	private <T extends Annotation> List<Field> getAnnotated(Class<T> clazz) {
+	protected <T extends Annotation> List<Field> getAnnotated(Class<T> clazz) {
 		List<Field> annotated = new ArrayList<>();
 		for (Field field : getFields()) {
 			if (field.isAnnotationPresent(clazz)) {
@@ -41,8 +41,15 @@ abstract public class JUnitTest {
 		return getClass().getDeclaredFields();
 	}
 
-	private void createInstance(Field field) throws Exception {
+	protected Object createInstance(Field field) throws Exception {
+		Object instance = field.getType().newInstance();
+		assignField(field, instance);
+
+		return instance;
+	}
+
+	protected void assignField(Field field, Object o) throws Exception {
 		field.setAccessible(true);
-		field.set(this, field.getType().newInstance());
+		field.set(this, o);
 	}
 }
