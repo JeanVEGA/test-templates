@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import eu.prvaci.util.test.annotation.Inject;
@@ -64,7 +63,7 @@ abstract public class EasyMockTest extends MockTest {
 		Field[] fields = tested.getValue().getClass().getDeclaredFields();
 		for (Field fieldToInject : fields) {
 			for (Field field : instances.keySet()) {
-				if (isSameName(field, fieldToInject) && isSameType(field, fieldToInject)) {
+				if (isSameName(field, fieldToInject) && isCompatibleType(field, fieldToInject)) {
 					fieldToInject.setAccessible(true);
 					fieldToInject.set(tested.getValue(), instances.get(field));
 				}
@@ -76,8 +75,8 @@ abstract public class EasyMockTest extends MockTest {
 		return StringUtils.equals(field.getName(), fieldToInject.getName());
 	}
 
-	private boolean isSameType(Field field, Field fieldToInject) {
-		return ObjectUtils.equals(field.getType(), fieldToInject.getType());
+	private boolean isCompatibleType(Field field, Field fieldToInject) {
+		return fieldToInject.getType().isAssignableFrom(field.getType());
 	}
 
 	private List<Field> collectInjectFields() {
