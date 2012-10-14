@@ -1,6 +1,7 @@
 package eu.prvaci.util.test.mock;
 
-import org.junit.Before;
+import java.lang.reflect.Field;
+import java.util.Map.Entry;
 
 import eu.prvaci.util.test.JUnitTest;
 
@@ -9,15 +10,16 @@ abstract public class MockTest extends JUnitTest {
 	private Object[] mocks;
 
 	@Override
-	@Before
 	public void setUp() throws Exception {
-		super.setUp();
-		initMocks();
+		Entry<Field, Object> tested = createTested();
+
+		mocks = initMocks(tested);
+		initOtherDependencies(tested);
 	}
 
-	private void initMocks() {
+	abstract protected Object[] initMocks(Entry<Field, Object> tested) throws Exception;
 
-	}
+	abstract protected void initOtherDependencies(Entry<Field, Object> tested) throws Exception;
 
 	protected Object[] getMocks() {
 		return mocks;

@@ -2,8 +2,10 @@ package eu.prvaci.util.test;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Before;
 
@@ -13,8 +15,14 @@ abstract public class JUnitTest {
 
 	@Before
 	public void setUp() throws Exception {
-		Field tested = getTestedField();
-		createInstance(tested);
+		createTested();
+	}
+
+	protected Map.Entry<Field, Object> createTested() throws Exception {
+		Field field = getTestedField();
+		Object instance = createInstance(field);
+
+		return new AbstractMap.SimpleEntry<>(field, instance);
 	}
 
 	protected Field getTestedField() {

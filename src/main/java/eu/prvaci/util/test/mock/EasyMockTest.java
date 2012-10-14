@@ -7,33 +7,24 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import eu.prvaci.util.test.JUnitTest;
 import eu.prvaci.util.test.annotation.Inject;
 import eu.prvaci.util.test.annotation.Mock;
 
-abstract public class EasyMockTest extends JUnitTest {
-
-	private Object[] mocks;
+abstract public class EasyMockTest extends MockTest {
 
 	@Override
-	public void setUp() throws Exception {
-		super.setUp();
-		Field tested = getTestedField();
-		initMocks(tested);
-		initOtherDependencies(tested);
-	}
-
-	private void initMocks(Field tested) throws Exception {
+	protected Object[] initMocks(Entry<Field, Object> tested) throws Exception {
 		List<Field> mockFields = collectMocks();
 		Map<Field, Object> instancePairs = createMockInstances(mockFields);
 
 		injectInstances(tested, instancePairs);
 		Collection<Object> instances = instancePairs.values();
-		mocks = instances.toArray(new Object[instances.size()]);
+		return instances.toArray(new Object[instances.size()]);
 	}
 
 	private Map<Field, Object> createMockInstances(List<Field> fields) throws Exception {
@@ -52,7 +43,8 @@ abstract public class EasyMockTest extends JUnitTest {
 		return Object.class.isAssignableFrom(field.getType());
 	}
 
-	private void initOtherDependencies(Field tested) throws Exception {
+	@Override
+	protected void initOtherDependencies(Entry<Field, Object> tested) throws Exception {
 		List<Field> injectFields = collectInjectFields();
 		Map<Field, Object> instances = collectInstances(injectFields);
 		injectInstances(tested, instances);
@@ -67,14 +59,14 @@ abstract public class EasyMockTest extends JUnitTest {
 		return instances;
 	}
 
-	private void injectInstances(Field tested, Map<Field, Object> instances) throws Exception {
-		tested.setAccessible(true);
-		Field[] fields = tested.get(this).getClass().getDeclaredFields();
+	private void injectInstances(Entry<Field, Object> tested, Map<Field, Object> instances) throws Exception {
+		tested.getKey().setAccessible(true);
+		Field[] fields = tested.getValue().getClass().getDeclaredFields();
 		for (Field fieldToInject : fields) {
 			for (Field field : instances.keySet()) {
 				if (isSameName(field, fieldToInject) && isSameType(field, fieldToInject)) {
 					fieldToInject.setAccessible(true);
-					fieldToInject.set(tested.get(this), instances.get(field));
+					fieldToInject.set(tested.getValue(), instances.get(field));
 				}
 			}
 		}
@@ -94,10 +86,6 @@ abstract public class EasyMockTest extends JUnitTest {
 
 	private List<Field> collectMocks() {
 		return getAnnotated(Mock.class);
-	}
-
-	protected Object[] getMocks() {
-		return mocks;
 	}
 
 }
