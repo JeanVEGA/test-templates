@@ -14,10 +14,10 @@ import org.apache.commons.lang3.StringUtils;
 import eu.prvaci.util.test.annotation.Inject;
 import eu.prvaci.util.test.annotation.Mock;
 
-abstract public class EasyMockTest extends MockTest {
+abstract public class EasyMockTest<TC> extends MockTest<TC> {
 
 	@Override
-	protected Object[] initMocks(Entry<Field, Object> tested) throws Exception {
+	protected Object[] initMocks(Entry<Field, TC> tested) throws Exception {
 		List<Field> mockFields = collectMocks();
 		Map<Field, Object> instancePairs = createMockInstances(mockFields);
 
@@ -43,7 +43,7 @@ abstract public class EasyMockTest extends MockTest {
 	}
 
 	@Override
-	protected void initOtherDependencies(Entry<Field, Object> tested) throws Exception {
+	protected void initOtherDependencies(Entry<Field, TC> tested) throws Exception {
 		List<Field> injectFields = collectInjectFields();
 		Map<Field, Object> instances = collectInstances(injectFields);
 		injectInstances(tested, instances);
@@ -58,7 +58,7 @@ abstract public class EasyMockTest extends MockTest {
 		return instances;
 	}
 
-	private void injectInstances(Entry<Field, Object> tested, Map<Field, Object> instances) throws Exception {
+	private void injectInstances(Entry<Field, TC> tested, Map<Field, Object> instances) throws Exception {
 		tested.getKey().setAccessible(true);
 		Field[] fields = tested.getValue().getClass().getDeclaredFields();
 		for (Field fieldToInject : fields) {

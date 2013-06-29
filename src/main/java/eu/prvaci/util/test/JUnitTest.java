@@ -11,16 +11,16 @@ import org.junit.Before;
 
 import eu.prvaci.util.test.annotation.Tested;
 
-abstract public class JUnitTest {
+abstract public class JUnitTest<TC> {
 
 	@Before
 	public void setUp() throws Exception {
 		createTested();
 	}
 
-	protected Map.Entry<Field, Object> createTested() throws Exception {
+	protected Map.Entry<Field, TC> createTested() throws Exception {
 		Field field = getTestedField();
-		Object instance = createInstance(field);
+		TC instance = createInstance(field);
 
 		return new AbstractMap.SimpleEntry<>(field, instance);
 	}
@@ -49,8 +49,9 @@ abstract public class JUnitTest {
 		return getClass().getDeclaredFields();
 	}
 
-	protected Object createInstance(Field field) throws Exception {
-		Object instance = field.getType().newInstance();
+	@SuppressWarnings("unchecked")
+	protected TC createInstance(Field field) throws Exception {
+		TC instance = (TC) field.getType().newInstance();
 		assignField(field, instance);
 
 		return instance;

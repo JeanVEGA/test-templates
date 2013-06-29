@@ -6,6 +6,7 @@
 	<packaging>jar</packaging>
 	<name>Test Templates</name>
 	<description>JUnit and Mock (EasyMock, Mockito) utilities</description>
+	<version>1.0.1-SNAPSHOT</version>
 
 	<parent>
 		<groupId>eu.prvaci</groupId>
