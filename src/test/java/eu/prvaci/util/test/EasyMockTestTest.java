@@ -7,21 +7,17 @@ import org.junit.Test;
 
 import eu.prvaci.util.test.annotation.Inject;
 import eu.prvaci.util.test.annotation.Mock;
-import eu.prvaci.util.test.annotation.Tested;
 import eu.prvaci.util.test.mock.EasyMockTest;
 import eu.prvaci.util.test.model.Model;
 import eu.prvaci.util.test.model.Service;
 
-public class EasyMockTestTest extends EasyMockTest {
-
-	@Tested
-	private Model model;
+public class EasyMockTestTest extends EasyMockTest<Model> {
 
 	@Inject
-	private int primitive = 2;
+	private final int primitive = 2;
 
 	@Inject
-	private Long nonPrimitive = 1L;
+	private final Long nonPrimitive = 1L;
 
 	@Mock
 	private Service service;
@@ -34,7 +30,7 @@ public class EasyMockTestTest extends EasyMockTest {
 	}
 
 	private void assertArrayNotNull() {
-		for (Object o : new Object[] { model, nonPrimitive, service }) {
+		for (Object o : new Object[] { testedClass, nonPrimitive, service }) {
 			assertNotNull(o);
 		}
 	}
@@ -44,9 +40,9 @@ public class EasyMockTestTest extends EasyMockTest {
 	}
 
 	private void assertDependencyInjection() {
-		assertSame(primitive, model.getPrimitive());
-		assertSame(nonPrimitive, model.getNonPrimitive());
-		assertSame(service, model.getService());
+		assertSame(primitive, testedClass.getPrimitive());
+		assertSame(nonPrimitive, testedClass.getNonPrimitive());
+		assertSame(service, testedClass.getService());
 	}
 
 }

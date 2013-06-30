@@ -2,16 +2,23 @@ package eu.prvaci.util.test;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.ClassUtils;
 import org.junit.Before;
 
 import eu.prvaci.util.test.annotation.Tested;
 
 abstract public class JUnitTest<TC> {
+
+	@Tested
+	protected TC testedClass;
 
 	@Before
 	public void setUp() throws Exception {
@@ -20,9 +27,9 @@ abstract public class JUnitTest<TC> {
 
 	protected Map.Entry<Field, TC> createTested() throws Exception {
 		Field field = getTestedField();
-		TC instance = createInstance(field);
+		testedClass = createInstance(field);
 
-		return new AbstractMap.SimpleEntry<>(field, instance);
+		return new AbstractMap.SimpleEntry<>(field, testedClass);
 	}
 
 	protected Field getTestedField() {
@@ -46,12 +53,23 @@ abstract public class JUnitTest<TC> {
 	}
 
 	private Field[] getFields() {
-		return getClass().getDeclaredFields();
+		return collectFields(getClass());
+	}
+
+	private Field[] collectFields(Class<?> clazz) {
+		Field[] fields = clazz.getDeclaredFields();
+		List<Class<?>> classes = ClassUtils.getAllSuperclasses(clazz);
+		for (Class<?> c : classes) {
+			fields = ArrayUtils.addAll(fields, c.getDeclaredFields());
+		}
+		return fields;
 	}
 
 	@SuppressWarnings("unchecked")
 	protected TC createInstance(Field field) throws Exception {
-		TC instance = (TC) field.getType().newInstance();
+		ParameterizedType type = (ParameterizedType) getClass().getGenericSuperclass();
+		Type[] arguments = type.getActualTypeArguments();
+		TC instance = ((Class<TC>) arguments[0]).newInstance();
 		assignField(field, instance);
 
 		return instance;
