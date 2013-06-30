@@ -1,6 +1,8 @@
 package eu.prvaci.util.test.mock;
 
 import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
@@ -10,11 +12,25 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang3.StringUtils;
+import org.junit.After;
 
 import eu.prvaci.util.test.annotation.Inject;
 import eu.prvaci.util.test.annotation.Mock;
 
 abstract public class EasyMockTest<TC> extends MockTest<TC> {
+
+	@After
+	public void after() {
+		verifyMocks();
+	}
+
+	protected void verifyMocks() {
+		verify(getMocks());
+	}
+
+	protected void replayMocks() {
+		replay(getMocks());
+	}
 
 	@Override
 	protected Object[] initMocks(Entry<Field, TC> tested) throws Exception {

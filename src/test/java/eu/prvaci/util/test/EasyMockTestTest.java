@@ -24,6 +24,8 @@ public class EasyMockTestTest extends EasyMockTest<Model> {
 
 	@Test
 	public void testEasyMock() {
+		replayMocks();
+
 		assertArrayNotNull();
 		assertMocks();
 		assertDependencyInjection();
