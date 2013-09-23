@@ -1,7 +1,11 @@
 package eu.prvaci.util.test;
 
+import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThat;
+
+import java.lang.reflect.Proxy;
 
 import org.junit.Test;
 
@@ -39,6 +43,8 @@ public class EasyMockTestTest extends EasyMockTest<Model> {
 
 	private void assertMocks() {
 		assertSame(service, getMocks()[0]);
+		assertThat(service, instanceOf(Proxy.class));
+
 	}
 
 	private void assertDependencyInjection() {

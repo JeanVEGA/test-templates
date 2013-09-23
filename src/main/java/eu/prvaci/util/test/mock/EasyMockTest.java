@@ -59,7 +59,7 @@ abstract public class EasyMockTest<TC> extends MockTest<TC> {
 	}
 
 	@Override
-	protected void initOtherDependencies(Entry<Field, TC> tested) throws Exception {
+	protected void initNonMockInjects(Entry<Field, TC> tested) throws Exception {
 		List<Field> injectFields = collectInjectFields();
 		Map<Field, Object> instances = collectInstances(injectFields);
 		injectInstances(tested, instances);

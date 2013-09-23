@@ -14,12 +14,12 @@ abstract public class MockTest<TC> extends JUnitTest<TC> {
 		Entry<Field, TC> tested = createTested();
 
 		mocks = initMocks(tested);
-		initOtherDependencies(tested);
+		initNonMockInjects(tested);
 	}
 
 	abstract protected Object[] initMocks(Entry<Field, TC> tested) throws Exception;
 
-	abstract protected void initOtherDependencies(Entry<Field, TC> tested) throws Exception;
+	abstract protected void initNonMockInjects(Entry<Field, TC> tested) throws Exception;
 
 	protected Object[] getMocks() {
 		return mocks;
