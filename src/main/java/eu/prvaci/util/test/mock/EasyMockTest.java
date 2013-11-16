@@ -33,13 +33,17 @@ abstract public class EasyMockTest<TC> extends MockTest<TC> {
 	}
 
 	@Override
-	protected Object[] initMocks(Entry<Field, TC> tested) throws Exception {
+	protected Object[] initMocks(Entry<Field, TC> tested, Map<Field, Object> mockInstancePairs) throws Exception {
+		injectInstances(tested, mockInstancePairs);
+		Collection<Object> instances = mockInstancePairs.values();
+		return instances.toArray(new Object[instances.size()]);
+	}
+
+	@Override
+	protected Map<Field, Object> createMockInstances() throws Exception {
 		List<Field> mockFields = collectMocks();
 		Map<Field, Object> instancePairs = createMockInstances(mockFields);
-
-		injectInstances(tested, instancePairs);
-		Collection<Object> instances = instancePairs.values();
-		return instances.toArray(new Object[instances.size()]);
+		return instancePairs;
 	}
 
 	private Map<Field, Object> createMockInstances(List<Field> fields) throws Exception {
