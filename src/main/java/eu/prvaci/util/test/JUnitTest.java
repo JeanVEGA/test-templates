@@ -1,5 +1,7 @@
 package eu.prvaci.util.test;
 
+import eu.prvaci.util.test.annotation.Tested;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
@@ -12,8 +14,7 @@ import java.util.Map;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.ClassUtils;
 import org.junit.Before;
-
-import eu.prvaci.util.test.annotation.Tested;
+import org.testng.annotations.BeforeMethod;
 
 abstract public class JUnitTest<TC> {
 
@@ -21,6 +22,7 @@ abstract public class JUnitTest<TC> {
 	protected TC testedClass;
 
 	@Before
+	@BeforeMethod
 	public void setUp() throws Exception {
 		createTested();
 	}

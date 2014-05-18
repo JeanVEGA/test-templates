@@ -5,13 +5,13 @@
 	<artifactId>test-templates</artifactId>
 	<packaging>jar</packaging>
 	<name>Test Templates</name>
-	<description>JUnit and Mock (EasyMock, Mockito) utilities</description>
-	<version>1.0.3</version>
+	<description>JUnit, TestNG and Mock (EasyMock, Mockito) utilities</description>
+	<version>1.0.4</version>
 
 	<parent>
 		<groupId>eu.prvaci</groupId>
 		<artifactId>parent</artifactId>
-		<version>1.0.0</version>
+		<version>1.0.1</version>
 	</parent>
 
 	<properties>
@@ -24,34 +24,35 @@
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
-			<version>${aspectj.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjrt</artifactId>
-			<version>${aspectj.version}</version>
 		</dependency>
 		<!-- Commons, Utils -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
-			<version>${commons.lang3.version}</version>
 		</dependency>
 		<!-- Test start -->
 		<dependency>
 			<groupId>org.easymock</groupId>
 			<artifactId>easymock</artifactId>
-			<version>${easymock.version}</version>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.hamcrest</groupId>
 			<artifactId>hamcrest-all</artifactId>
-			<version>${hamcrest.version}</version>
 		</dependency>
 	</dependencies>
 </project>

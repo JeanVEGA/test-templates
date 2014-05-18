@@ -3,6 +3,8 @@ package eu.prvaci.util.test.mock;
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
+import eu.prvaci.util.test.annotation.Inject;
+import eu.prvaci.util.test.annotation.Mock;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
@@ -13,13 +15,12 @@ import java.util.Map.Entry;
 
 import org.apache.commons.lang3.StringUtils;
 import org.junit.After;
-
-import eu.prvaci.util.test.annotation.Inject;
-import eu.prvaci.util.test.annotation.Mock;
+import org.testng.annotations.AfterMethod;
 
 abstract public class EasyMockTest<TC> extends MockTest<TC> {
 
 	@After
+	@AfterMethod
 	public void after() {
 		verifyMocks();
 	}
