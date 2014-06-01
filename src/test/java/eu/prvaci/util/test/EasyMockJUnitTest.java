@@ -15,7 +15,7 @@ import eu.prvaci.util.test.mock.EasyMockTest;
 import eu.prvaci.util.test.model.Model;
 import eu.prvaci.util.test.model.Service;
 
-public class EasyMockTestTest extends EasyMockTest<Model> {
+public class EasyMockJUnitTest extends EasyMockTest<Model> {
 
 	@Inject
 	private final int primitive = 2;

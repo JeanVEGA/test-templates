@@ -1,15 +1,20 @@
 package eu.prvaci.util.test.mock;
 
+import eu.prvaci.util.test.JUnitTest;
+
 import java.lang.reflect.Field;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import eu.prvaci.util.test.JUnitTest;
+import org.junit.Before;
+import org.testng.annotations.BeforeMethod;
 
 abstract public class MockTest<TC> extends JUnitTest<TC> {
 
 	private Object[] mocks;
 
+	@Before
+	@BeforeMethod
 	@Override
 	public void setUp() throws Exception {
 		Map<Field, Object> mockInstancePairs = createMockInstances();
